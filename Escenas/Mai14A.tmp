@@ -1,0 +1,42 @@
+[gd_scene load_steps=10 format=3 uid="uid://f2avuhgvwdyl"]
+
+[ext_resource type="Script" path="res://Scripts/Player.gd" id="1_gq8uu"]
+[ext_resource type="PackedScene" uid="uid://dm082javibicx" path="res://Escenas/BulletBlack.tscn" id="3_4qmme"]
+[ext_resource type="Texture2D" uid="uid://dr1yduuubn7iu" path="res://Sprites/ship_D.png" id="3_k2yl5"]
+[ext_resource type="PackedScene" uid="uid://br5fy7fe7bkxh" path="res://Escenas/BulletWhite.tscn" id="4_pk48r"]
+[ext_resource type="PackedScene" uid="uid://bxqrmyo5v2stu" path="res://Escenas/AsteroidWhite.tscn" id="6_g62bc"]
+[ext_resource type="PackedScene" uid="uid://cf2xu1kkja2hn" path="res://Escenas/AsteroidBlack.tscn" id="6_sb71x"]
+[ext_resource type="Script" path="res://Escenas/Spawner.gd" id="7_q6nrc"]
+[ext_resource type="Texture2D" uid="uid://d3817ynd6cecn" path="res://Sprites/13-01.png" id="8_uw3pf"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_0hpad"]
+
+[node name="Escena" type="Node2D"]
+
+[node name="13-01" type="Sprite2D" parent="."]
+modulate = Color(0.729412, 0.682353, 0.462745, 0.431373)
+position = Vector2(576, 447)
+scale = Vector2(2.25, 1.74609)
+texture = ExtResource("8_uw3pf")
+
+[node name="Player" type="Area2D" parent="."]
+position = Vector2(500, 300)
+rotation = -1.5708
+script = ExtResource("1_gq8uu")
+bullet_black = ExtResource("3_4qmme")
+bullet_white = ExtResource("4_pk48r")
+
+[node name="Sprite2D" type="Sprite2D" parent="Player"]
+rotation = 1.5708
+texture = ExtResource("3_k2yl5")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Player"]
+shape = SubResource("CapsuleShape2D_0hpad")
+
+[node name="Spawner" type="Node2D" parent="."]
+script = ExtResource("7_q6nrc")
+enemy_scene_1 = ExtResource("6_sb71x")
+enemy_scene_2 = ExtResource("6_g62bc")
+player = NodePath("../Player")
+
+[connection signal="area_entered" from="Player" to="Player" method="_on_area_entered"]

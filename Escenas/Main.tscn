@@ -1,0 +1,189 @@
+[gd_scene load_steps=20 format=3 uid="uid://f2avuhgvwdyl"]
+
+[ext_resource type="Script" path="res://Scripts/Player.gd" id="1_gq8uu"]
+[ext_resource type="PackedScene" uid="uid://dm082javibicx" path="res://Escenas/BulletBlack.tscn" id="3_4qmme"]
+[ext_resource type="Texture2D" uid="uid://dr1yduuubn7iu" path="res://Sprites/ship_D.png" id="3_k2yl5"]
+[ext_resource type="PackedScene" uid="uid://br5fy7fe7bkxh" path="res://Escenas/BulletWhite.tscn" id="4_pk48r"]
+[ext_resource type="PackedScene" uid="uid://bxqrmyo5v2stu" path="res://Escenas/AsteroidWhite.tscn" id="6_g62bc"]
+[ext_resource type="PackedScene" uid="uid://cf2xu1kkja2hn" path="res://Escenas/AsteroidBlack.tscn" id="6_sb71x"]
+[ext_resource type="AudioStream" uid="uid://b02e6544wqtg4" path="res://Sounds/Blaster2.wav" id="7_0h0eu"]
+[ext_resource type="Script" path="res://Scripts/Spawner.gd" id="7_q6nrc"]
+[ext_resource type="AudioStream" uid="uid://cju7yuhofhn84" path="res://Sounds/Boom1.wav" id="8_mwa3s"]
+[ext_resource type="Texture2D" uid="uid://d3817ynd6cecn" path="res://Sprites/13-01.png" id="8_uw3pf"]
+[ext_resource type="AudioStream" uid="uid://oslou0c5vh8k" path="res://Sounds/Blaster1.wav" id="9_tt5fg"]
+[ext_resource type="AudioStream" uid="uid://c2v4kfx6obbro" path="res://Sounds/theme.mp3" id="12_6lmo3"]
+[ext_resource type="Texture2D" uid="uid://n5dyhr06c8f0" path="res://Sprites/reload.png" id="12_ulh7k"]
+[ext_resource type="Script" path="res://Escenas/MainMenu.gd" id="12_vfb0l"]
+[ext_resource type="Texture2D" uid="uid://bshwi4bpucdir" path="res://Sprites/play-button-arrowhead.png" id="13_cfpo5"]
+[ext_resource type="Texture2D" uid="uid://cjeujbp4o2tk8" path="res://Sprites/move.png" id="14_ogq8y"]
+[ext_resource type="Texture2D" uid="uid://b8lbl25qqbr3q" path="res://Sprites/left.png" id="15_k8yqh"]
+[ext_resource type="Texture2D" uid="uid://cjwl0vil4chea" path="res://Sprites/right.png" id="16_hgvlo"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_0hpad"]
+height = 26.0
+
+[node name="Escena" type="Node2D"]
+
+[node name="13-01" type="Sprite2D" parent="."]
+modulate = Color(0.729412, 0.682353, 0.462745, 0.431373)
+position = Vector2(576, 447)
+scale = Vector2(2.25, 1.74609)
+texture = ExtResource("8_uw3pf")
+
+[node name="Player" type="Area2D" parent="." node_paths=PackedStringArray("gameOver")]
+position = Vector2(576, 345)
+rotation = -1.5708
+script = ExtResource("1_gq8uu")
+bullet_black = ExtResource("3_4qmme")
+bullet_white = ExtResource("4_pk48r")
+gameOver = NodePath("../UI/GameOver")
+
+[node name="Sprite2D" type="Sprite2D" parent="Player"]
+rotation = 1.5708
+texture = ExtResource("3_k2yl5")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Player"]
+shape = SubResource("CapsuleShape2D_0hpad")
+
+[node name="Blaster1" type="AudioStreamPlayer" parent="Player"]
+stream = ExtResource("9_tt5fg")
+
+[node name="Blaster2" type="AudioStreamPlayer" parent="Player"]
+stream = ExtResource("7_0h0eu")
+
+[node name="Death" type="AudioStreamPlayer" parent="Player"]
+stream = ExtResource("8_mwa3s")
+
+[node name="Spawner" type="Node2D" parent="."]
+script = ExtResource("7_q6nrc")
+enemy_scene_1 = ExtResource("6_sb71x")
+enemy_scene_2 = ExtResource("6_g62bc")
+player = NodePath("../Player")
+
+[node name="UI" type="CanvasLayer" parent="." node_paths=PackedStringArray("mainMenu", "gameOver", "score", "bestLabel")]
+script = ExtResource("12_vfb0l")
+mainMenu = NodePath("Menu")
+gameOver = NodePath("GameOver")
+score = NodePath("GameOver2/ScoreLabel")
+bestLabel = NodePath("GameOver2/BestScoreLabel")
+
+[node name="Menu" type="CanvasLayer" parent="UI"]
+
+[node name="Tittle" type="Label" parent="UI/Menu"]
+offset_right = 1150.0
+offset_bottom = 647.0
+theme_override_font_sizes/font_size = 100
+text = "
+Voidlight"
+horizontal_alignment = 1
+
+[node name="CanvasLayer2" type="Node2D" parent="UI/Menu"]
+scale = Vector2(0.2, 0.2)
+
+[node name="Play" type="Button" parent="UI/Menu/CanvasLayer2"]
+offset_left = 2630.0
+offset_top = 2180.0
+offset_right = 3150.0
+offset_bottom = 2700.0
+icon = ExtResource("13_cfpo5")
+
+[node name="Sprite2D" type="Sprite2D" parent="UI/Menu"]
+position = Vector2(78, 164)
+scale = Vector2(0.3, 0.3)
+texture = ExtResource("14_ogq8y")
+
+[node name="Sprite2D2" type="Sprite2D" parent="UI/Menu"]
+position = Vector2(77, 320)
+scale = Vector2(0.3, 0.3)
+texture = ExtResource("15_k8yqh")
+
+[node name="Sprite2D3" type="Sprite2D" parent="UI/Menu"]
+position = Vector2(78, 475)
+scale = Vector2(0.3, 0.3)
+texture = ExtResource("16_hgvlo")
+
+[node name="GameOver" type="CanvasLayer" parent="UI"]
+visible = false
+
+[node name="GameOver" type="Label" parent="UI/GameOver"]
+offset_right = 1150.0
+offset_bottom = 647.0
+theme_override_font_sizes/font_size = 100
+text = "GAME OVER"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="scoreText" type="Label" parent="UI/GameOver"]
+visible = false
+offset_right = 40.0
+offset_bottom = 23.0
+text = "Score:"
+
+[node name="ScoreLabel" type="Label" parent="UI/GameOver"]
+visible = false
+offset_left = 47.0
+offset_right = 87.0
+offset_bottom = 23.0
+
+[node name="BestText" type="Label" parent="UI/GameOver"]
+visible = false
+offset_left = 1076.0
+offset_right = 1116.0
+offset_bottom = 23.0
+text = "Best:"
+
+[node name="BestScoreLabel" type="Label" parent="UI/GameOver"]
+visible = false
+offset_left = 1115.0
+offset_right = 1152.0
+offset_bottom = 23.0
+
+[node name="CanvasLayer" type="Node2D" parent="UI/GameOver"]
+scale = Vector2(0.2, 0.2)
+
+[node name="reload" type="Button" parent="UI/GameOver/CanvasLayer"]
+offset_left = 2630.0
+offset_top = 2180.0
+offset_right = 3150.0
+offset_bottom = 2700.0
+theme_override_font_sizes/font_size = 40
+icon = ExtResource("12_ulh7k")
+
+[node name="GameOver2" type="CanvasLayer" parent="UI"]
+
+[node name="scoreText" type="Label" parent="UI/GameOver2"]
+offset_right = 40.0
+offset_bottom = 23.0
+theme_override_font_sizes/font_size = 30
+text = "Score:"
+
+[node name="ScoreLabel" type="Label" parent="UI/GameOver2"]
+offset_left = 102.535
+offset_right = 166.175
+offset_bottom = 42.0
+theme_override_font_sizes/font_size = 30
+
+[node name="BestText" type="Label" parent="UI/GameOver2"]
+offset_left = 1007.45
+offset_right = 1079.45
+offset_bottom = 42.0
+theme_override_font_sizes/font_size = 30
+text = "Best:"
+
+[node name="BestScoreLabel" type="Label" parent="UI/GameOver2"]
+offset_left = 1080.73
+offset_right = 1148.73
+offset_bottom = 42.0
+theme_override_font_sizes/font_size = 30
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+process_mode = 3
+stream = ExtResource("12_6lmo3")
+volume_db = -5.0
+autoplay = true
+
+[connection signal="area_entered" from="Player" to="Player" method="_on_area_entered"]
+[connection signal="script_changed" from="Player" to="UI" method="_on_player_script_changed"]
+[connection signal="finished" from="Player/Death" to="Player" method="_on_death_finished"]
+[connection signal="pressed" from="UI/Menu/CanvasLayer2/Play" to="UI" method="_on_play_pressed"]
+[connection signal="pressed" from="UI/GameOver/CanvasLayer/reload" to="UI" method="_on_reload_pressed"]

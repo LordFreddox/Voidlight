@@ -1,0 +1,26 @@
+[gd_scene load_steps=6 format=3 uid="uid://br5fy7fe7bkxh"]
+
+[ext_resource type="Texture2D" uid="uid://bk1fc2pajtj7d" path="res://Sprites/star_tiny.png" id="1_qlmr5"]
+[ext_resource type="PackedScene" uid="uid://2iea1lffikdx" path="res://Escenas/BoomWhite.tscn" id="2_ovqmc"]
+[ext_resource type="Script" path="res://Scripts/Bullet.gd" id="2_tq4qk"]
+[ext_resource type="AudioStream" uid="uid://cjuhdb4xnlbwt" path="res://Sounds/Boom2.wav" id="4_himc7"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_vlyg5"]
+size = Vector2(40, 40)
+
+[node name="Bullet" type="Area2D"]
+script = ExtResource("2_tq4qk")
+enemy_type = "white"
+explosion_scene = ExtResource("2_ovqmc")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_qlmr5")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+light_mask = 2
+shape = SubResource("RectangleShape2D_vlyg5")
+
+[node name="explosion" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("4_himc7")
+
+[connection signal="area_entered" from="." to="." method="_on_area_entered"]
